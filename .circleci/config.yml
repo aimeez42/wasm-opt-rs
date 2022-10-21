@@ -4,7 +4,7 @@ orbs:
   rust: circleci/rust@1.6.0
 
 jobs:
-  build-job:
+  build-test-job:
     machine:
       image: ubuntu-2004:current
     resource_class: arm.large
