@@ -5,17 +5,40 @@ orbs:
 
 jobs:
   build-job:
-    machine:
-      image: ubuntu-2004:202101-01
-    resource_class: arm.large
+    docker:
+      - image: cimg/rust:1.50.0
     steps:  
       - checkout
-      - run: cargo --version
+      - restore_cache:
+          key: project-cache
       - run:
-          name: Run Tests
-          command: "cargo test"
-
-
+          name: Check formatting
+          command: |
+            rustfmt --version
+            cargo fmt -- --write-mode=diff
+      - run:
+          name: Nightly Build
+          command: |
+            rustup run nightly rustc --version --verbose
+            rustup run nightly cargo --version --verbose
+            rustup run nightly cargo build
+      - run:
+          name: Stable Build
+          command: |
+            rustup run stable rustc --version --verbose
+            rustup run stable cargo --version --verbose
+            rustup run stable cargo build
+      - run:
+          name: Test
+          command: rustup run stable cargo test
+      - run:
+          name: Upload Coverage
+          command: ./scripts/codecov.sh
+      - save_cache:
+          key: project-cache
+          paths:
+            - "~/.cargo"
+            - "./target"
 
 workflows:
   wasm-opt-rs-workflow:
