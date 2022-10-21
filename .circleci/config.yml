@@ -1,8 +1,13 @@
 jobs:
-  my-job:
+  build:
     machine:
       image: ubuntu-2004:202101-01
-    resource_class: arm.medium
-    steps:
-      - run: uname -a
-      - run: echo "Hello, Arm!"
+    resource_class: arm.large
+    steps:      
+      - uses: dtolnay/rust-toolchain@v1
+        with:
+          toolchain: stable
+      - uses: actions/checkout@v3
+      - run: git submodule update --init --recursive
+      - run: cargo build --verbose
+      - run: cargo test -- --nocapture
