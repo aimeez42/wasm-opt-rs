@@ -1,3 +1,5 @@
+version: 2.1
+
 orbs:
   rust: circleci/rust@1.6.0
 
@@ -7,11 +9,12 @@ jobs:
       image: ubuntu-2004:202101-01
     resource_class: arm.large
     steps:  
-      - rust/cargo-run:
-          working_directory: wasm-opt-rs
-      - run: git submodule update --init --recursive
-      - run: cargo build --verbose
-      - run: cargo test -- --nocapture
+      - checkout
+      - run: cargo --version
+      - run:
+          name: Run Tests
+          command: "cargo test"
+
 
 
 workflows:
