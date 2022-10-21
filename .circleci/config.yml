@@ -27,5 +27,3 @@ workflows:
   wasm-opt-rs-workflow:
     jobs:
       - build-test-job
-      - rust/lint-test-build:
-          release: true
