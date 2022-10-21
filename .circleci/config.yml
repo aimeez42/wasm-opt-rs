@@ -12,16 +12,10 @@ jobs:
       - checkout
       - run: git submodule update --init --recursive
       - rust/install
-      - run: |
-          sudo apt-get update
-          sudo apt-get install clang-7
-          clang-7 --version
-          clang++-7 --version
       - run:
           name: Version information
           command: rustc --version; cargo --version; rustup --version
-      - run: cargo build --verbose
-      - run: cargo test -- --nocapture
+      - rust/test
 
 
 workflows:
