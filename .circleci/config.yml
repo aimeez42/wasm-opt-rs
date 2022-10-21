@@ -8,12 +8,18 @@ jobs:
     machine:
       image: ubuntu-2004:current
     resource_class: arm.large
+    environment:
+      # Fail the build if there are warnings
+      RUSTFLAGS: '-D warnings'
     steps:  
       - run: |
           sudo apt-get update
           sudo apt-get install clang-7
           clang-7 --version
           clang++-7 --version
+      - run:
+          name: Version information
+          command: rustc --version; cargo --version; rustup --version
       - checkout
       - run: git submodule update --init --recursive
       - run: cargo build --verbose
