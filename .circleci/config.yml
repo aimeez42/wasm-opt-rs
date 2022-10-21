@@ -22,7 +22,8 @@ jobs:
       - run: cargo build --verbose
       - run: cargo test -- --nocapture
 
+
 workflows:
   wasm-opt-rs-workflow:
     jobs:
-      - build-job
+      - rust/test
