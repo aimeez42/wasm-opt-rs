@@ -10,6 +10,7 @@ jobs:
     resource_class: arm.medium
     steps:  
       - checkout
+      - run: git submodule sync
       - run: git submodule update --init --recursive
       - run: cargo build --verbose
       - run: cargo test -- --nocapture
