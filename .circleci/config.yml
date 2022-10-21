@@ -9,6 +9,11 @@ jobs:
       image: ubuntu-2004:current
     resource_class: arm.large
     steps:  
+      - run: |
+          sudo apt-get update
+          sudo apt-get install clang-7
+          clang-7 --version
+          clang++-7 --version
       - checkout
       - run: git submodule update --init --recursive
       - run: cargo build --verbose
