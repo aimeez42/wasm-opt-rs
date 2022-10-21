@@ -13,7 +13,6 @@ jobs:
       - run: git submodule update --init --recursive
       - run: cargo build --verbose
       - run: cargo test -- --nocapture
-      - run: cargo fmt --check
 
 workflows:
   wasm-opt-rs-workflow:
