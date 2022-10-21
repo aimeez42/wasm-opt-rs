@@ -4,7 +4,7 @@ orbs:
   rust: circleci/rust@1.6.0
 
 jobs:
-  build-test-job:
+  build-and-test:
     machine:
       image: ubuntu-2004:current
     resource_class: arm.large
@@ -16,9 +16,17 @@ jobs:
           name: Version information
           command: rustc --version; cargo --version; rustup --version
       - rust/test
-
+  conformance-tests:
+    machine:
+      image: ubuntu-2004:current
+    resource_class: arm.large
+    steps:
+      - checkout
+      - run: git submodule update --init --recursive
+      - run: cargo test --manifest-path components/conformance-tests/Cargo.toml 
 
 workflows:
   wasm-opt-rs-workflow:
     jobs:
-      - build-test-job
+      - build-and-test
+      - conformance-tests
